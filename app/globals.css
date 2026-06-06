@@ -1,0 +1,294 @@
+@import "tailwindcss";
+
+/* ============================================================
+   NEXORA — Design tokens (Tailwind v4 CSS-first theme)
+   ============================================================ */
+@theme {
+  --color-bg: #050507;
+  --color-panel: #0b0f19;
+  --color-surface: #121826;
+  --color-ink: #f5f5f7;
+  --color-muted: #a1a1aa;
+  --color-lavender: #d8ccff;
+  --color-lav: #b9a2ff;
+  --color-violet: #8b5cf6;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-display: var(--font-cormorant), ui-serif, Georgia, "Times New Roman",
+    serif;
+
+  --shadow-glow: 0 0 80px -20px rgba(124, 92, 255, 0.45);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background-color: #050507;
+  color: #f5f5f7;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050507;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.25);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.45);
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.28);
+  color: #d8ccff;
+}
+
+/* ============================================================
+   Reusable primitives
+   ============================================================ */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Wide tracked uppercase label */
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-lav);
+}
+
+/* Violet → lavender clipped gradient text for emphasis */
+.text-grad {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #d8ccff 38%,
+    #b9a2ff 70%,
+    #8b5cf6 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.text-grad-violet {
+  background: linear-gradient(180deg, #d8ccff 0%, #b9a2ff 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Soft radial violet glow used behind sections / accents */
+.glow {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(124, 92, 255, 0.16) 0%,
+    rgba(124, 92, 255, 0.06) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Surface card */
+.card {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 24, 38, 0.9) 0%,
+    rgba(11, 15, 25, 0.9) 100%
+  );
+  border: 1px solid rgba(184, 165, 255, 0.1);
+  border-radius: 1.25rem;
+  transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease,
+    background 0.4s ease;
+}
+.card-hover:hover {
+  border-color: rgba(184, 165, 255, 0.28);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px -28px rgba(124, 92, 255, 0.5);
+}
+
+/* Hairline divider */
+.hairline {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(184, 165, 255, 0.18),
+    transparent
+  );
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 1.6rem;
+  border-radius: 0.85rem;
+  transition: transform 0.25s ease, box-shadow 0.35s ease,
+    background 0.35s ease, border-color 0.35s ease, color 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Primary: violet gradient fill */
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d4ad6 100%);
+  box-shadow: 0 12px 36px -14px rgba(124, 92, 255, 0.7);
+}
+.btn-primary:hover {
+  box-shadow: 0 18px 50px -14px rgba(124, 92, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+/* Outline glowing */
+.btn-outline {
+  color: #f5f5f7;
+  background: rgba(184, 165, 255, 0.04);
+  border: 1px solid rgba(184, 165, 255, 0.22);
+}
+.btn-outline:hover {
+  border-color: rgba(184, 165, 255, 0.5);
+  background: rgba(184, 165, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Ghost (text-only with subtle border) */
+.btn-ghost {
+  color: #f5f5f7;
+  background: transparent;
+  border: 1px solid rgba(245, 245, 247, 0.14);
+}
+.btn-ghost:hover {
+  border-color: rgba(245, 245, 247, 0.32);
+  background: rgba(245, 245, 247, 0.03);
+}
+
+/* ============================================================
+   Hero hands — built from /mano.png
+   The source is a dark hand on a white background. invert()
+   turns the white field black and the hand light; mix-blend
+   screen then drops the (now black) field to transparent and
+   keeps the luminous hand — fingers emerging from darkness.
+   ============================================================ */
+.hero-hand {
+  position: absolute;
+  bottom: -2%;
+  width: clamp(320px, 40vw, 600px);
+  filter: invert(1) brightness(1.04) contrast(1.02);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+.hero-hand-left {
+  left: -3%;
+  transform: rotate(-4deg);
+  -webkit-mask-image: radial-gradient(
+    120% 120% at 70% 30%,
+    #000 45%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(120% 120% at 70% 30%, #000 45%, transparent 82%);
+}
+.hero-hand-right {
+  right: -3%;
+  transform: scaleX(-1) rotate(-4deg);
+  -webkit-mask-image: radial-gradient(
+    120% 120% at 70% 30%,
+    #000 45%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(120% 120% at 70% 30%, #000 45%, transparent 82%);
+}
+
+@media (max-width: 768px) {
+  .hero-hand {
+    width: 62vw;
+    opacity: 0.4;
+  }
+  .hero-hand-left {
+    left: -22%;
+  }
+  .hero-hand-right {
+    right: -22%;
+  }
+}
+
+/* Subtle floating used by accent elements; gentle and slow */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.floaty {
+  animation: floaty 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .floaty {
+    animation: none;
+  }
+}
+
+/* Marquee-free thin trust separator dot */
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-lav);
+  opacity: 0.5;
+}
