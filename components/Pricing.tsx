@@ -19,6 +19,8 @@ type Plan = {
   name: string;
   desc: string;
   price: string;
+  oldPrice?: string;
+  offer?: string;
   features: string[];
   featured?: boolean;
 };
@@ -28,7 +30,10 @@ const PLANS: Plan[] = [
     tag: "Plan 1",
     name: "Presencia Digital",
     desc: "Para profesionales que necesitan verse serios desde el primer vistazo.",
-    price: "300",
+    price: "150",
+    oldPrice: "300",
+    offer: "50% OFF · Por tiempo limitado",
+    featured: true,
     features: [
       "Sitio web profesional",
       "Diseño responsive",
@@ -43,7 +48,6 @@ const PLANS: Plan[] = [
     name: "Crecimiento",
     desc: "Para quienes quieren diferenciarse, atraer clientes y hacer crecer su negocio.",
     price: "950",
-    featured: true,
     features: [
       "Todo lo del plan Presencia Digital",
       "Copywriting estratégico",
@@ -155,14 +159,24 @@ export function Pricing() {
                 </ul>
 
                 <div className="mt-auto pt-8">
-                  <div className="flex items-baseline gap-1.5">
+                  {plan.offer && (
+                    <span className="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-400/10 px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-amber-200">
+                      {plan.offer}
+                    </span>
+                  )}
+                  <div className="flex items-baseline gap-2">
+                    {plan.oldPrice && (
+                      <span className="font-display text-2xl font-medium text-muted/45 line-through">
+                        {plan.oldPrice}
+                      </span>
+                    )}
                     <span className="font-display text-4xl font-semibold text-ink">
                       {plan.price}
                     </span>
                     <span className="text-lg font-medium text-lav">Bs</span>
                   </div>
                   <p className="mt-1 text-[0.7rem] uppercase tracking-[0.18em] text-muted/70">
-                    Pago único del proyecto
+                    {plan.offer ? "Precio de lanzamiento · pago único" : "Pago único del proyecto"}
                   </p>
 
                   <a
