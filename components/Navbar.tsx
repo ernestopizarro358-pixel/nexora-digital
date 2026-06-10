@@ -51,15 +51,17 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <a
-            href={SITE.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary hidden h-11 px-5 text-sm sm:inline-flex"
-          >
-            <Whatsapp className="h-4 w-4" />
-            Hablemos por WhatsApp
-          </a>
+          <div className="hidden lg:block">
+            <a
+              href={SITE.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary h-11 px-5 text-sm"
+            >
+              <Whatsapp className="h-4 w-4" />
+              Hablemos por WhatsApp
+            </a>
+          </div>
 
           {/* Mobile toggle */}
           <button

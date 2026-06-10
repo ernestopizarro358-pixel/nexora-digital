@@ -120,7 +120,7 @@ function FaqItem({
 }
 
 export function FAQ() {
-  const [open, setOpen] = useState<number>(4); // "¿Cuánto tiempo tarda?" open by default
+  const [open, setOpen] = useState<number>(-1); // todas cerradas al inicio
 
   return (
     <section
