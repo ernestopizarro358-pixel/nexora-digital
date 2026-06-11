@@ -1,6 +1,6 @@
 import { SITE } from "@/lib/site";
 import { Logo } from "./Logo";
-import { Instagram, Whatsapp, Mail } from "./icons";
+import { Instagram, Whatsapp } from "./icons";
 
 export function Footer() {
   return (
@@ -29,14 +29,6 @@ export function Footer() {
             >
               <Whatsapp className="h-4 w-4" />
               {SITE.whatsappDisplay}
-            </a>
-            <span className="hidden h-4 w-px bg-white/10 sm:block" />
-            <a
-              href={`mailto:${SITE.email}`}
-              className="flex items-center gap-2 transition-colors hover:text-ink"
-            >
-              <Mail className="h-4 w-4" />
-              {SITE.email}
             </a>
           </nav>
 
