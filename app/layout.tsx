@@ -1,48 +1,53 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { Inter, Fraunces } from "next/font/google";
+import { SITE } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  variable: "--font-fraunces",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NEXORA — Tu negocio merece una presencia digital seria",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: "NEXORA — Páginas web que hacen que te tomen en serio",
+    template: "%s · NEXORA",
+  },
   description:
-    "Creamos páginas web modernas y sistemas automatizados que atraen, convierten y hacen crecer tu negocio en Tarija y toda Bolivia.",
+    "Estudio de diseño web en Tarija, Bolivia. Creamos la página profesional que hace que un cliente confíe en ti antes de hablar contigo. Lista en ~3 días hábiles.",
   keywords: [
     "diseño web Tarija",
     "página web Bolivia",
-    "diseño web premium",
     "presencia digital",
-    "automatización WhatsApp",
-    "sistemas digitales",
+    "web para profesionales",
     "NEXORA",
   ],
   authors: [{ name: "NEXORA" }],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "NEXORA — Tu negocio merece una presencia digital seria",
+    title: "NEXORA — Páginas web que hacen que te tomen en serio",
     description:
-      "Sistemas digitales que transmiten confianza, atraen clientes y hacen crecer tu negocio.",
+      "La página profesional que hace que un cliente confíe en ti antes de hablar contigo. Tarija, Bolivia.",
     locale: "es_BO",
     type: "website",
+    siteName: "NEXORA",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050507",
-  colorScheme: "dark",
+  themeColor: "#faf9f7",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -51,8 +56,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${cormorant.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="es"
+      className={`${inter.variable} ${fraunces.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        {/* Activa los reveals solo cuando hay JS: sin JS el contenido
+            queda visible (robustez + accesibilidad). Antes de pintar. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

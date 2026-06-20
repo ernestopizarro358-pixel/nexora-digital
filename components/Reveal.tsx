@@ -1,43 +1,72 @@
 "use client";
 
-import { motion } from "framer-motion";
-import type { CSSProperties, ReactNode } from "react";
+import {
+  createElement,
+  useEffect,
+  useRef,
+  type ElementType,
+  type ReactNode,
+} from "react";
 
 type RevealProps = {
   children: ReactNode;
-  delay?: number;
-  y?: number;
+  /** Etiqueta a renderizar (div por defecto; "li", "article", etc.). */
+  as?: ElementType;
   className?: string;
-  style?: CSSProperties;
-  as?: "div" | "li" | "span" | "section" | "article";
+  /** Retardo en segundos para escalonar (stagger). */
+  delay?: number;
 };
 
 /**
- * Subtle scroll-reveal: fade + small rise, once. Gentle easing.
- * Premium feel without scroll-jacking. Not gated by reduced-motion
- * (functional micro-animation, per cross-platform guidance).
+ * Revela su contenido al entrar en viewport (IntersectionObserver + CSS).
+ * Sin JS el contenido es visible; con reduced-motion aparece sin transición.
  */
 export function Reveal({
   children,
-  delay = 0,
-  y = 22,
-  className,
-  style,
   as = "div",
+  className = "",
+  delay = 0,
 }: RevealProps) {
-  // Runtime renders the chosen tag; cast to a single concrete motion
-  // component so prop type-checking stays consistent across tags.
-  const MotionTag = motion[as] as typeof motion.div;
-  return (
-    <MotionTag
-      className={className}
-      style={style}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </MotionTag>
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      el.classList.add("is-in");
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            el.classList.add("is-in");
+            io.unobserve(el);
+          }
+        }
+      },
+      { threshold: 0.04, rootMargin: "0px 0px -8% 0px" }
+    );
+    io.observe(el);
+
+    // Red de seguridad: si no dispara (layouts raros), revela igual.
+    const safety = window.setTimeout(() => el.classList.add("is-in"), 4000);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(safety);
+    };
+  }, []);
+
+  return createElement(
+    as,
+    {
+      ref,
+      className: `reveal ${className}`.trim(),
+      style: delay ? { transitionDelay: `${delay}s` } : undefined,
+    },
+    children
   );
 }

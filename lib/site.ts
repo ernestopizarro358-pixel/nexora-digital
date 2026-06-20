@@ -1,33 +1,44 @@
-// Central source of truth for contact + links.
-// WhatsApp number is REAL per client brief: 59177170368.
+// ============================================================
+// NEXORA — Contacto, enlaces y datos de marca (fuente única).
+// Edita aquí WhatsApp, Instagram y URLs de los demos.
+// ============================================================
 
-const WA_MESSAGE = encodeURIComponent(
-  "Hola NEXORA 👋, vi su página web y quiero más información."
-);
+const DEFAULT_WA_MESSAGE =
+  "Hola NEXORA 👋, vi su página y quiero más información sobre el plan Presencia Digital.";
 
 export const SITE = {
   brand: "NEXORA",
+  // URL pública para metadata/OG. Cambia cuando tengas el dominio final.
+  url: "https://nexora.com.bo",
+  location: "Tarija, Bolivia",
+
+  // WhatsApp REAL del cliente
   whatsappNumber: "59177170368",
   whatsappDisplay: "+591 77170368",
-  whatsappUrl: `https://wa.me/59177170368?text=${WA_MESSAGE}`,
+
+  // Redes
   instagram: "https://instagram.com/nexorabo",
   instagramHandle: "@nexorabo",
-  arianaDemoUrl: "https://ariana-fisioteapia.vercel.app/",
-  camiloDemoUrl: "https://lic-camilo.vercel.app/",
-  location: "Tarija, Bolivia",
+
+  // Demos reales (verificados en vivo)
+  demos: {
+    ariana: "https://ariana-fisioteapia.vercel.app/",
+    camilo: "https://lic-camilo.vercel.app/",
+  },
 } as const;
 
-/** Build a wa.me link with a custom prefilled message. */
-export function waLink(message: string) {
+/** Construye un enlace wa.me con mensaje pre-rellenado. */
+export function waLink(message: string = DEFAULT_WA_MESSAGE) {
   return `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(
     message
   )}`;
 }
 
+/** Navegación de la home (una sola página). */
 export const NAV_LINKS = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Proyectos", href: "#proyectos" },
+  { label: "El porqué", href: "#porque" },
+  { label: "Cómo lo hacemos", href: "#solucion" },
+  { label: "Ejemplos", href: "#prueba" },
   { label: "Planes", href: "#planes" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Preguntas", href: "#faq" },
 ] as const;

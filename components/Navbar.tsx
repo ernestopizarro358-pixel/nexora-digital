@@ -1,23 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { SITE, NAV_LINKS } from "@/lib/site";
-import { Logo } from "./Logo";
-import { Whatsapp, ArrowRight } from "./icons";
+import { NAV_LINKS, SITE, waLink } from "@/lib/site";
+import { WhatsApp } from "./icons";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when the mobile menu is open
+  // Bloquea el scroll del fondo cuando el menú móvil está abierto.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -27,110 +25,104 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-white/[0.06] bg-bg/80 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
+          ? "border-b border-line bg-bg/85 backdrop-blur-md"
+          : "border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 sm:px-8">
-        <Logo />
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
+        <a
+          href="#inicio"
+          className="font-display text-xl font-semibold tracking-[0.18em] text-ink"
+          aria-label="NEXORA — inicio"
+        >
+          {SITE.brand}
+        </a>
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-9 lg:flex">
+        <div className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="relative text-sm text-muted transition-colors duration-300 hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-lav after:transition-all after:duration-300 hover:after:w-full"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:block">
             <a
-              href={SITE.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary h-11 px-5 text-sm"
+              key={link.href}
+              href={link.href}
+              className="text-sm text-muted transition-colors hover:text-ink"
             >
-              <Whatsapp className="h-4 w-4" />
-              Hablemos por WhatsApp
+              {link.label}
             </a>
-          </div>
-
-          {/* Mobile toggle */}
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={open}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 text-ink lg:hidden"
-          >
-            <span className="relative block h-4 w-5">
-              <span
-                className={`absolute left-0 block h-0.5 w-5 bg-current transition-all duration-300 ${
-                  open ? "top-1.5 rotate-45" : "top-0"
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1.5 block h-0.5 w-5 bg-current transition-all duration-300 ${
-                  open ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute left-0 block h-0.5 w-5 bg-current transition-all duration-300 ${
-                  open ? "top-1.5 -rotate-45" : "top-3"
-                }`}
-              />
-            </span>
-          </button>
+          ))}
         </div>
+
+        <div className="hidden md:block">
+          <a
+            href={waLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
+            <WhatsApp className="h-4 w-4" />
+            Escríbenos
+          </a>
+        </div>
+
+        {/* Botón menú móvil */}
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="relative z-50 flex h-10 w-10 items-center justify-center md:hidden"
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={open}
+        >
+          <span className="relative block h-4 w-6">
+            <span
+              className={`absolute left-0 block h-0.5 w-6 bg-ink transition-all duration-300 ${
+                open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-1/2 block h-0.5 w-6 -translate-y-1/2 bg-ink transition-all duration-300 ${
+                open ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute left-0 block h-0.5 w-6 bg-ink transition-all duration-300 ${
+                open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"
+              }`}
+            />
+          </span>
+        </button>
       </nav>
 
-      {/* Mobile panel */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-white/[0.06] bg-bg/95 backdrop-blur-xl lg:hidden"
+      {/* Panel móvil */}
+      <div
+        className={`fixed inset-0 top-16 z-40 origin-top bg-bg px-5 transition-all duration-300 md:hidden ${
+          open
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
+      >
+        <div className="flex flex-col gap-1 border-t border-line pt-6">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+              className="font-display border-b border-line py-4 text-2xl text-ink"
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href={waLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="btn btn-primary btn-lg mt-6 w-full"
           >
-            <ul className="flex flex-col gap-1 px-5 py-5 sm:px-8">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-xl px-4 py-3 text-base text-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              <li className="mt-3">
-                <a
-                  href={SITE.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                  className="btn btn-primary w-full"
-                >
-                  <Whatsapp className="h-4 w-4" />
-                  Hablemos por WhatsApp
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-              </li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <WhatsApp className="h-5 w-5" />
+            Escríbenos por WhatsApp
+          </a>
+        </div>
+      </div>
     </header>
   );
 }
